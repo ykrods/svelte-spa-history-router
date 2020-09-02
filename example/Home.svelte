@@ -10,10 +10,6 @@
   onMount(() => {
     window.document.title = 'Home';
   });
-
-  function buttonDidPush() {
-    push('/posts/test-param');
-  }
 </script>
 
 <div class="home">
@@ -30,5 +26,5 @@
     </ul>
     {/await}
   </div>
-  <button on:click="{buttonDidPush}">Go to article</button>
+  <button on:click="{() => push('/posts/test-param')}">Go to article</button>
 </div>
