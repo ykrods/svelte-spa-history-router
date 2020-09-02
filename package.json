@@ -1,8 +1,9 @@
 {
   "name": "svelte-spa-history-router",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "History base router for Svelte3 SPA",
   "main": "src/index.js",
+  "svelte": "src/index.js",
   "scripts": {
     "example:build": "cd example && rollup -c",
     "example:serve": "node server.js",

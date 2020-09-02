@@ -63,7 +63,7 @@ For example:
 # Article.svelte
 
 <script>
-  import { routeParams } from 'svelte-spa-history-router/stores';
+  import { routeParams } from 'svelte-spa-history-router';
 </script>
 
 <div class="article">
