@@ -16,7 +16,11 @@ History base router for Svelte 3 SPA (Single Page Application).
 
 ## Install
 
-WIP
+```sh
+$ npm install --save-dev svelte-spa-history-router
+$ # or
+$ yarn add svelte-spa-history-router
+```
 
 ## Usage
 
@@ -84,7 +88,7 @@ import { link } from 'svelte-spa-history-router';
 ```html
 import { push } from 'svelte-spa-history-router';
 
-<button on:click={ () => { push('/');} }>Go to Home</button>
+<button on:click={ () => push('/') }>Go to Home</button>
 ```
 
 
