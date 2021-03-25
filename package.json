@@ -13,12 +13,13 @@
     "svelte": "^3.24.1"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^9.0.0",
-    "puppeteer": "1.13.0",
-    "rollup": "^2.26.5",
-    "rollup-plugin-svelte": "^6.0.0",
-    "svelte": "^3.24.1",
-    "tape": "^5.0.1"
+    "@rollup/plugin-node-resolve": "*",
+    "puppeteer": "*",
+    "rollup": "*",
+    "rollup-plugin-svelte": "*",
+    "svelte": "*",
+    "tape": "*",
+    "utf-8-validate": "*"
   },
   "author": "ykrods",
   "license": "MIT",

@@ -12,13 +12,10 @@ export default {
   plugins: [
     svelte({
       extensions: ['.svelte'],
-      // enable run-time checks when not in production
-      dev: true,
-      // we'll extract any component CSS out into
-      // a separate file - better for performance
-      css: css => {
-        css.write('bundle.css');
-      },
+      compilerOptions: {
+        // enable run-time checks when not in production
+        dev: true,
+      }
     }),
 
     // to resolve (import) thrid-party libs
