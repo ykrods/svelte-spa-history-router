@@ -6,13 +6,13 @@ History base router for Svelte 3 SPA (Single Page Application).
 
 - History-base routing
 - Regular expression is supported for path matching and caputuring path variables
+- Navigation guard
 
 ## *Not* supported features
 
 - Hash-base routing
 - Nested router
 - SSR (Server Side Rendering)
-- Guard (pre-executing function to check user permission)
 
 ## Install
 
@@ -48,10 +48,13 @@ For example:
 ```
 
 * `Routes` require a `routes` parameter.
-* `routes` is a list of Object having `path` and `component`.
-* `path` can be a regular expression. `^` and `$` are automatically added when matching.
-* `component` is a SvelteComponent. there are no specific requirements for component.
-* Matching is simply executed in the order defined in `routes`.
+* `routes` is a list of route objects. route object has `path`, `component`, and `guard` properties.
+
+  * `path` can be a regular expression. `^` and `$` are automatically added when matching.
+  * `component` is a SvelteComponent. there are no specific requirements for component.
+  * `guard` is guard function (optional).
+
+* Matching is simply performed in the order defined by `routes`.
 
 ### routeParams
 
@@ -91,10 +94,57 @@ import { push } from 'svelte-spa-history-router';
 <button on:click={ () => push('/') }>Go to Home</button>
 ```
 
+### Navigation guard
+
+(Added in v1.1.0)
+
+Navigation guard is a route option to check if a visitor can navigate its route.
+
+```html
+# App.svelte
+
+<script>
+  import { Router } from 'svelte-spa-history-router';
+
+  import Home from './Home.svelte';
+  import Admin from './Admin.svelte';
+
+  function adminGuard(from, to, next) {
+    if (isAdminUser() === true) {
+      next();
+    } else {
+      next("/"); // Redirect to "/"
+    }
+  }
+
+  const routes = [
+    { path: '/', component: Home},
+    { path: '/admin', component: Admin, guard: adminGuard},
+    { path: '.*', component: NotFound},
+  ];
+</script>
+<Router {routes}/>
+```
+
+guard function is called with three arguments: `from`, `to`, and `next`
+
+* `from` : current route object
+* `to` : new route object
+* `next:` : function to determine navigation. `next()` will navigate as is and `next("/")` will redirect to another page.
 
 ### Full example:
 
 [example](https://github.com/ykrods/svelte-spa-history-router/tree/master/example)
+
+## ChangeLog
+
+### 1.1.0 (2021-03-26)
+
+* Add guard
+
+### 1.0.2
+
+* Fix import error
 
 ## License
 
