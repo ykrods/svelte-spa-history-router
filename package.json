@@ -8,13 +8,15 @@
   "scripts": {
     "example:build": "cd example && rollup -c",
     "example:serve": "node server.js",
-    "test": "run-tiny-esm-test-runner tests/**/test_*.js"
+    "test": "run-tiny-esm-test-runner tests/**/test_*.js",
+    "format": "prettier --write 'src/**/*.js'"
   },
   "peerDependencies": {
     "svelte": "^3.24.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "*",
+    "prettier": "*",
     "puppeteer": "^2.1.0",
     "rollup": "*",
     "rollup-plugin-svelte": "*",
