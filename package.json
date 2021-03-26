@@ -2,23 +2,24 @@
   "name": "svelte-spa-history-router",
   "version": "1.0.2",
   "description": "History base router for Svelte3 SPA",
+  "type": "module",
   "main": "src/index.js",
   "svelte": "src/index.js",
   "scripts": {
     "example:build": "cd example && rollup -c",
     "example:serve": "node server.js",
-    "test": "tape tests/**/test_*.js"
+    "test": "run-tiny-esm-test-runner tests/**/test_*.js"
   },
   "peerDependencies": {
     "svelte": "^3.24.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "*",
-    "puppeteer": "*",
+    "puppeteer": "^2.1.0",
     "rollup": "*",
     "rollup-plugin-svelte": "*",
     "svelte": "*",
-    "tape": "*",
+    "tiny-esm-test-runner": "*",
     "utf-8-validate": "*"
   },
   "author": "ykrods",

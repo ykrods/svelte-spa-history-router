@@ -1,9 +1,12 @@
 /**
  * Static HTTP server with routing
  */
-const fs = require('fs/promises');
-const http = require('http');
-const path = require('path');
+import fs from 'fs/promises';
+import http from 'http';
+import path from 'path';
+import process from 'process';
+
+import { fileURLToPath } from 'url';
 
 const STATIC_DIR = path.join('example', 'dist');
 
@@ -27,7 +30,7 @@ function getContentType(filename) {
   return extMap[path.extname(filename)] || 'text/plain';
 }
 
-let server = http.createServer(async (request, response) => {
+export const server = http.createServer(async (request, response) => {
   console.log(`[${(new Date()).toISOString()}] ${request.method} ${request.url}`);
 
   const fileName = getFileName(request.url);
@@ -41,12 +44,8 @@ let server = http.createServer(async (request, response) => {
   response.end(content, 'utf-8');
 });
 
-module.exports = {
-  server,
-}
-
 // Run server
-if(!module.parent) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = 8080;
   server.listen(port);
   console.log(`Server running on ${port}`);
