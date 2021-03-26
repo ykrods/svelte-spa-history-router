@@ -7,6 +7,10 @@
   // @type{Array.{path: string, component: SvelteComponent}}
   export let routes = [];
 
+  $: if (Array.isArray(routes) === false) {
+    throw new Error(`routes should be Array, given: ${typeof routes}`);
+  }
+
   onMount(() => {
     // initialze
     currentPath.set(window.location.pathname);
