@@ -85,3 +85,21 @@ export async function testFragment() {
     ok(topY < bottomY);
   });
 }
+
+export async function testGuard() {
+  await browserFixture(async (browser, page, serverUrl) => {
+    await page.goto(serverUrl);
+    await page.waitForSelector("div.home");
+
+    await page.click('a[href="/admin"]');
+    // Redirected to login
+    ok((await page.url()).includes('/login'));
+
+    // Do login
+    await page.waitForSelector("button");
+    await page.click('button#login');
+
+    await page.click('a[href="/admin"]');
+    ok((await page.url()).includes('/admin'));
+  });
+}

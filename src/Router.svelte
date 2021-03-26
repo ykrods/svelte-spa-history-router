@@ -1,7 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
 
   import { currentPath, currentRoute } from './stores';
+  import { push } from './push';
 
   // @type{Array.{path: string, component: SvelteComponent}}
   export let routes = [];
@@ -21,7 +22,24 @@
     };
   });
 
-  $: currentRoute.set(resolveRoute($currentPath));
+  $: {
+    const route = resolveRoute($currentPath);
+
+    if (route === null || typeof route.guard !== 'function') {
+      currentRoute.set(route);
+    } else {
+      // guard
+      const next = (redirect = null) => {
+        if (typeof redirect === "string" ) {
+          tick().then(() => push(redirect));
+        } else {
+          currentRoute.set(route);
+        }
+      };
+      route.guard($currentRoute, route, next);
+    }
+  }
+
   $: currentComponent = ($currentRoute !== null) ? $currentRoute.component : null;
 
   function resolveRoute(currentPath) {
@@ -29,11 +47,11 @@
       return null;
     }
 
-    for (const { path, component } of routes) {
-      const re = new RegExp(`^${path}$`, 'i');
+    for (const route of routes) {
+      const re = new RegExp(`^${route.path}$`, 'i');
       const match = currentPath.match(re);
       if (match) {
-        return { path, component, params: match.groups };
+        return Object.assign({ params: match.groups }, route);
       }
     };
 
