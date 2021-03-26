@@ -24,4 +24,9 @@ export default {
       dedupe: ['svelte']
     }),
   ],
+  watch: {
+    include: './**',
+    chokidar: false,
+    clearScreen: false,
+  },
 };

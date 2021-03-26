@@ -7,6 +7,7 @@
   "svelte": "src/index.js",
   "scripts": {
     "example:build": "cd example && rollup -c",
+    "example:build:watch": "cd example && rollup -c -w",
     "example:serve": "node server.js",
     "test": "run-tiny-esm-test-runner tests/**/test_*.js",
     "format": "prettier --write 'src/**/*.js'"
