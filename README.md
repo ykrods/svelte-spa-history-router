@@ -138,6 +138,10 @@ guard function is called with three arguments: `from`, `to`, and `next`
 
 ## ChangeLog
 
+### 1.1.1 (2021-04-12)
+
+* Fix bug with async guard function causing loop
+
 ### 1.1.0 (2021-03-26)
 
 * Add guard
