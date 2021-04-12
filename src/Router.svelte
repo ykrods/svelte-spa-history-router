@@ -26,8 +26,10 @@
     };
   });
 
-  $: {
-    const route = resolveRoute($currentPath);
+  $: onCurrentPathChanged($currentPath);
+
+  function onCurrentPathChanged(currentPath) {
+    const route = resolveRoute(currentPath);
 
     if (route === null || typeof route.guard !== 'function') {
       currentRoute.set(route);
