@@ -6,7 +6,7 @@ History base router for Svelte 3 SPA (Single Page Application).
 
 - History-base routing
 - Regular expression is supported for path matching and caputuring path variables
-- resolver (for dynamic routing, code-splitting, preloading data, etc...)
+- resolver (for dynamic routing, code-splitting, preloading, etc...)
 
 ## *Not* supported features
 
@@ -108,8 +108,8 @@ see [example](https://github.com/ykrods/svelte-spa-history-router/blob/main/exam
 
 ### 2.0.0 (2021-04-15)
 
-* [Added] route resolver
-* [Removed] route guard
+* [Added] resolver
+* [Removed] guard
 
 ### 1.1.1 (2021-04-12)
 
