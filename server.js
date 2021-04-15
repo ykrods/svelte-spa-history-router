@@ -13,8 +13,6 @@ const STATIC_DIR = path.join('example', 'dist');
 const STATIC_FILES = [
   "Article.js",
   "Article.js.map",
-  "NotFound.js",
-  "NotFound.js.map",
   "index.html",
   "main.js",
   "main.js.map",
