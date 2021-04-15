@@ -5,9 +5,10 @@ export default {
   input: 'main.js',
   output: {
     sourcemap: true,
-    format: 'iife',
     name: 'app',
-    file: 'dist/bundle.js'
+    format: 'esm',
+    dir: 'dist/',
+    chunkFileNames: '[name].js'
   },
   plugins: [
     svelte({
@@ -25,7 +26,7 @@ export default {
     }),
   ],
   watch: {
-    include: './**',
+    include: ['./**', '../src/**'],
     chokidar: false,
     clearScreen: false,
   },

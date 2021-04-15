@@ -1,5 +1,5 @@
 <script>
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
 
   import { currentPath, currentRoute } from './stores';
   import { push } from './push';
@@ -28,25 +28,24 @@
 
   $: onCurrentPathChanged($currentPath);
 
-  function onCurrentPathChanged(currentPath) {
+  async function onCurrentPathChanged(currentPath) {
     const route = resolveRoute(currentPath);
 
-    if (route === null || typeof route.guard !== 'function') {
-      currentRoute.set(route);
+    if (route === null) {
+      currentRoute.set(null);
     } else {
-      // guard
-      const next = (redirect = null) => {
-        if (typeof redirect === "string" ) {
-          tick().then(() => push(redirect));
-        } else {
-          currentRoute.set(route);
+      if (typeof route.resolver === "function") {
+        const resolved = await Promise.resolve(route.resolver(route));
+        if (resolved.redirect) {
+          push(resolved.redirect);
+          return;
         }
-      };
-      route.guard($currentRoute, route, next);
+        // if resolver returns `import(...)`, it needs to retrieve .default
+        route.component = resolved.default || resolved;
+      }
+      currentRoute.set(route);
     }
   }
-
-  $: currentComponent = ($currentRoute !== null) ? $currentRoute.component : null;
 
   function resolveRoute(currentPath) {
     if (!currentPath) {
@@ -57,12 +56,15 @@
       const re = new RegExp(`^${route.path}$`, 'i');
       const match = currentPath.match(re);
       if (match) {
-        return Object.assign({ params: match.groups }, route);
+        return Object.assign({}, route, { params: match.groups, props: {}});
       }
     };
 
     throw new Error(`No route for ${currentPath} exists.`);
   }
+
+  $: currentComponent = ($currentRoute && $currentRoute.component) || null;
+  $: currentProps = ($currentRoute && $currentRoute.props) || {};
 </script>
 
-<svelte:component this="{currentComponent}" />
+<svelte:component this="{currentComponent}" {...currentProps} />
