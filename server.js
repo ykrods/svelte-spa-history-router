@@ -10,9 +10,20 @@ import { fileURLToPath } from 'url';
 
 const STATIC_DIR = path.join('example', 'dist');
 
+const STATIC_FILES = [
+  "Article.js",
+  "Article.js.map",
+  "NotFound.js",
+  "NotFound.js.map",
+  "index.html",
+  "main.js",
+  "main.js.map",
+  "main2.js",
+  "main2.js.map",
+];
+
 function getFileName(url) {
-  const static_files = ['bundle.css', 'bundle.css.map', 'bundle.js', 'bundle.js.map'];
-  const s = static_files.find(f => '/' + f === url);
+  const s = STATIC_FILES.find(f => '/' + f === url);
   if (s) {
     return s;
   }

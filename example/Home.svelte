@@ -1,17 +1,15 @@
 <script>
-  import { onMount } from 'svelte';
-
   import { link, push } from '../src/index';
 
   import { getArticles } from './data-source';
 
   let articlesPromise = getArticles();
 
-  onMount(() => {
-    window.document.title = 'Home';
-  });
 </script>
 
+<svelte:head>
+  <title>Home</title>
+</svelte:head>
 <div class="home">
   <h1>Home</h1>
   <div>
@@ -21,10 +19,11 @@
     {:then articles}
     <ul>
       {#each articles as article}
-      <li><a use:link href="{`/posts/${article.id}`}">{article.title}</a></li>
+      <li><a use:link href={`/posts/${article.id}`}>{article.title}</a></li>
       {/each}
     </ul>
     {/await}
   </div>
-  <button on:click="{() => push('/posts/test-param')}">Go to article</button>
+  <button on:click={() => push('/posts/test-param')}>Go to article</button>
+  <button on:click={() => push('/posts/deleted')}>Go to to deleted article </button>
 </div>
