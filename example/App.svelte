@@ -21,6 +21,7 @@
   async function prefetchArticle(route) {
     const article = await getArticle(route.params.postId);
     if (article) {
+      // pass value to component props
       route.props.article = article;
       return import("./Article.svelte");
     } else {

@@ -98,7 +98,7 @@ import { push } from 'svelte-spa-history-router';
 
 (Added in v2.0.0)
 
-see [example](https://github.com/ykrods/svelte-spa-history-router/blob/main/example/App.svelte)
+see [example](https://github.com/ykrods/svelte-spa-history-router/blob/main/example/App.svelte#L13)
 
 ### Full example:
 
