@@ -1,5 +1,5 @@
 export { default as Router } from "./Router.svelte";
-export { routeParams } from "./stores.js";
+export { routeParams, currentURL } from "./stores.js";
 export { link } from "./link.js";
 export { push } from "./push.js";
 
