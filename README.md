@@ -98,7 +98,64 @@ import { push } from 'svelte-spa-history-router';
 
 (Added in v2.0.0)
 
-see [example](https://github.com/ykrods/svelte-spa-history-router/blob/main/example/App.svelte#L13-L35)
+Resolver is a mechanism to dynamically determine component and can be used in multiple use cases.
+
+```html
+<!-- Example: code spliting (dynamic import) -->
+<script>
+  import { Router } from 'svelte-spa-history-router';
+
+  const routes = [
+    { path: '/', resolver: _ => import("Home.svelte") },
+  ];
+</script>
+<Router {routes}/>
+```
+
+```html
+<!-- Example: dynamic routing -->
+<script>
+  import { Router } from 'svelte-spa-history-router';
+
+  import Article from "./Article.svelte";
+  import { getArticle } from './data-source.js';
+
+  async function prefetchArticle(route) {
+    const article = await getArticle(route.params.postId);
+    if (article) {
+      // pass value to component props
+      route.props.article = article;
+      return Article;
+    } else {
+      return NotFound;
+    }
+  }
+
+  const routes = [
+    { path: '/posts/(?<postId>.*)', resolver: prefetchArticle },
+  ];
+</script>
+<Router {routes}/>
+```
+
+```html
+<!-- Example: code guard -->
+<script>
+  import { Router, redirect } from 'svelte-spa-history-router';
+
+  function adminGuard(route) {
+    if (!isAdmin($user)) {
+      return redirect("/login");
+    }
+    return Admin;
+  }
+
+  const routes = [
+    { path: '/admin', resolver: adminGuard },
+  ];
+</script>
+<Router {routes}/>
+```
 
 ### Full example:
 
