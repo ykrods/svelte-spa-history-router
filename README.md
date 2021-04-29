@@ -100,8 +100,9 @@ import { push } from 'svelte-spa-history-router';
 
 Resolver is a mechanism to dynamically determine component and can be used in multiple use cases.
 
+Example: code spliting (dynamic import)
+
 ```html
-<!-- Example: code spliting (dynamic import) -->
 <script>
   import { Router } from 'svelte-spa-history-router';
 
@@ -112,13 +113,13 @@ Resolver is a mechanism to dynamically determine component and can be used in mu
 <Router {routes}/>
 ```
 
+Example: dynamic routing and pass value to component props.
+
 ```html
-<!-- Example: dynamic routing -->
 <script>
   import { Router } from 'svelte-spa-history-router';
 
   import Article from "./Article.svelte";
-  import { getArticle } from './data-source.js';
 
   async function prefetchArticle(route) {
     const article = await getArticle(route.params.postId);
@@ -138,19 +139,23 @@ Resolver is a mechanism to dynamically determine component and can be used in mu
 <Router {routes}/>
 ```
 
+Example: guard
+
 ```html
-<!-- Example: code guard -->
 <script>
   import { Router, redirect } from 'svelte-spa-history-router';
 
+import Admin from "./Admin.svelte";
+
   function adminGuard(route) {
     if (!isAdmin($user)) {
-      return redirect("/login");
+      return redirect("/");
     }
     return Admin;
   }
 
   const routes = [
+    { path: '/', component: Home },
     { path: '/admin', resolver: adminGuard },
   ];
 </script>
