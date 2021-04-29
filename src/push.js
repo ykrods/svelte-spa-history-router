@@ -1,4 +1,4 @@
-import { currentPath } from "./stores.js";
+import { currentPath, currentURL } from "./stores.js";
 
 export function push(next) {
   window.history.pushState({}, "", next);
@@ -6,4 +6,5 @@ export function push(next) {
   // Exclude queryString and hash
   const url = new URL(next, window.location.origin);
   currentPath.set(url.pathname);
+  currentURL.set(url);
 }

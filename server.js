@@ -15,6 +15,8 @@ const STATIC_FILES = [
   "Article.js.map",
   "Login.js",
   "Login.js.map",
+  "Query.js",
+  "Query.js.map",
   "index.html",
   "main.js",
   "main.js.map",

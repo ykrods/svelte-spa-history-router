@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
 
-  import { currentPath, currentRoute } from './stores.js';
+  import { currentPath, currentRoute, currentURL } from './stores.js';
   import { push } from './push.js';
 
   // @type{Array.{path: string, component: SvelteComponent}}
@@ -14,6 +14,7 @@
   onMount(() => {
     const onPopState = (evt) => {
       currentPath.set(window.location.pathname);
+      currentURL.setCurrent();
     };
 
     window.addEventListener('popstate', onPopState);

@@ -10,3 +10,21 @@ export const currentRoute = writable(null);
 export const routeParams = derived(currentRoute, ($currentRoute) => {
   return $currentRoute ? $currentRoute.params || {} : {};
 });
+
+// Store of current location (to detect changes of query or hash)
+export const currentURL = (() => {
+  function getCurrent() {
+    return new URL(window.location);
+  }
+  const { subscribe, set } = writable(getCurrent());
+
+  return {
+    subscribe,
+    set(url) {
+      set(url);
+    },
+    setCurrent() {
+      set(getCurrent());
+    }
+  }
+})();
