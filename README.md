@@ -168,6 +168,10 @@ import Admin from "./Admin.svelte";
 
 ## ChangeLog
 
+### 2.1.0 (2021-04-29)
+
+* Add `currentURL` store to detect URL changes [PR6](https://github.com/ykrods/svelte-spa-history-router/pull/6)
+
 ### 2.0.0 (2021-04-15)
 
 * [Added] resolver
