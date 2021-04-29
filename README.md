@@ -96,8 +96,6 @@ import { push } from 'svelte-spa-history-router';
 
 ### resolver
 
-(Added in v2.0.0)
-
 Resolver is a mechanism to dynamically determine component and can be used in multiple use cases.
 
 Example: code spliting (dynamic import)
@@ -120,6 +118,7 @@ Example: dynamic routing and pass value to component props.
   import { Router } from 'svelte-spa-history-router';
 
   import Article from "./Article.svelte";
+  import NotFound from "./NotFound.svelte";
 
   async function prefetchArticle(route) {
     const article = await getArticle(route.params.postId);
@@ -145,7 +144,7 @@ Example: guard
 <script>
   import { Router, redirect } from 'svelte-spa-history-router';
 
-import Admin from "./Admin.svelte";
+  import Admin from "./Admin.svelte";
 
   function adminGuard(route) {
     if (!isAdmin($user)) {
@@ -161,6 +160,23 @@ import Admin from "./Admin.svelte";
 </script>
 <Router {routes}/>
 ```
+
+(Added in v2.0.0)
+
+### currentURL
+
+store to detect URL changes (including query string or hash)
+
+```html
+<script>
+  import { currentURL } from "svelte-spa-history-router";
+
+  $: name = $currentURL.searchParams.get("name") || 'unknown';
+</script>
+<div>{ name }</div>
+```
+
+(Added in 2.1.0)
 
 ### Full example:
 
