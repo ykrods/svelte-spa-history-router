@@ -1,6 +1,6 @@
 <script>
-  import { link } from '../src/index';
-  import { routeParams } from '../src/stores';
+  import { link } from '../src/index.js';
+  import { routeParams } from '../src/stores.js';
 
   export let article;
 

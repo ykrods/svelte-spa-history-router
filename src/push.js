@@ -1,4 +1,4 @@
-import { currentPath } from "./stores";
+import { currentPath } from "./stores.js";
 
 export function push(next) {
   window.history.pushState({}, "", next);

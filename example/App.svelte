@@ -1,13 +1,12 @@
 <script>
-  import { Router, link, redirect } from '../src/index';
+  import { Router, link, redirect } from '../src/index.js';
 
-  import { user } from './store';
-  import { getArticle } from './data-source';
+  import { user } from './store.js';
+  import { getArticle } from './data-source.js';
 
   // static routes
   import Home from './Home.svelte';
   import Admin from './Admin.svelte';
-  import Login from './Login.svelte';
   import NotFound from "./NotFound.svelte";
 
   function adminGuard(route) {
@@ -33,7 +32,7 @@
     { path: '/', component: Home},
     { path: '/posts/(?<postId>.*)', resolver: prefetchArticle },
     { path: '/admin', resolver: adminGuard },
-    { path: '/login', component: Login },
+    { path: '/login', resolver: _ => import("./Login.svelte") },
   ];
 </script>
 

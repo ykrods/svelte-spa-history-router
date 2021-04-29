@@ -1,7 +1,7 @@
 <script>
-  import { push } from '../src/push';
+  import { push } from '../src/push.js';
 
-  import { user } from './store';
+  import { user } from './store.js';
 
   function login() {
     $user = "admin";
