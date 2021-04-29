@@ -1,7 +1,7 @@
 import { writable, derived } from "svelte/store";
 
 // Store used by router to detect changes.
-export const currentPath = writable(null);
+export const currentPath = writable(window.location.pathname);
 
 // Store for component or application using router.
 export const currentRoute = writable(null);
