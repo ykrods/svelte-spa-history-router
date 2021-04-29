@@ -103,3 +103,26 @@ export async function testGuard() {
     ok((await page.url()).includes('/admin'));
   });
 }
+
+export async function testQuery() {
+  await browserFixture(async (browser, page, serverUrl) => {
+    await page.goto(serverUrl);
+    await page.waitForSelector("div.home");
+
+    await page.click('a[href="/query"]');
+    await page.waitForSelector("div.query");
+    let name = await page.$eval('#name', e => e.innerText);
+    is(name, "unknown");
+
+    await page.click('a[href="/query?name=foo"]');
+    name = await page.$eval('#name', e => e.innerText);
+    is(name, "foo");
+
+    // Back
+    await page.goBack();
+    await page.waitFor(30);
+    name = await page.$eval('#name', e => e.innerText);
+    is(name, "unknown");
+
+  });
+}

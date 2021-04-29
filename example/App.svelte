@@ -33,6 +33,7 @@
     { path: '/posts/(?<postId>.*)', resolver: prefetchArticle },
     { path: '/admin', resolver: adminGuard },
     { path: '/login', resolver: _ => import("./Login.svelte") },
+    { path: '/query', resolver: _ => import("./Query.svelte") },
   ];
 </script>
 
@@ -41,6 +42,7 @@
     <li><a use:link href="/">Home</a></li>
     <li><a use:link href="/admin">Admin</a></li>
     <li><a use:link href="/login">Login</a></li>
+    <li><a use:link href="/query">Query</a></li>
   </ul>
 </div>
 
