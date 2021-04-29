@@ -5,8 +5,8 @@ History base router for Svelte 3 SPA (Single Page Application).
 ## Features
 
 - History-base routing
-- Regular expression is supported for path matching and caputuring path variables
-- resolver (for dynamic routing, code-splitting, preloading, etc...)
+- path matching and path variable capturing by regular expression
+- resolver (for dynamic routing, code-splitting, data preloading, etc...)
 
 ## *Not* supported features
 
@@ -74,7 +74,7 @@ For example:
 </div>
 ```
 
-### Navitation methods
+### Navigation methods
 
 To navigate another page, `link` and `push` are available.
 

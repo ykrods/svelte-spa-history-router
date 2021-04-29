@@ -4,12 +4,8 @@
  * Dummy APIs for fetch data
  */
 
-async function sleep(s) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, s * 1000);
-  });
+function sleep(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
 };
 
 const articles = [
@@ -37,7 +33,7 @@ const articles = [
 ];
 
 export async function getArticles() {
-  await sleep(0.1);
+  await sleep(100);
   return articles;
 }
 

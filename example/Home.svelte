@@ -1,7 +1,7 @@
 <script>
-  import { link, push } from '../src/index';
+  import { link, push } from '../src/index.js';
 
-  import { getArticles } from './data-source';
+  import { getArticles } from './data-source.js';
 
   let articlesPromise = getArticles();
 

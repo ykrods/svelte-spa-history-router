@@ -1,4 +1,4 @@
-import { push } from "./push";
+import { push } from "./push.js";
 
 export function link(node) {
   function onClick(event) {
