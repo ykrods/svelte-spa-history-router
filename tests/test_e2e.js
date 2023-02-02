@@ -1,4 +1,3 @@
-// XXX: puppeteer 3.0.0 ~ 8.0.0 does not work on macOS Catalina, node 14.0.0
 import  puppeteer from 'puppeteer';
 
 import { assert } from 'tiny-esm-test-runner';
@@ -64,7 +63,7 @@ export async function testBrowserBack() {
 
     // Back
     await page.goBack();
-    await page.waitFor(30);
+    await page.waitForTimeout(30);
 
     ng((await page.url()).includes('/posts/test-param'));
     is(await page.title(), 'Home');
@@ -120,7 +119,7 @@ export async function testQuery() {
 
     // Back
     await page.goBack();
-    await page.waitFor(30);
+    await page.waitForTimeout(30);
     name = await page.$eval('#name', e => e.innerText);
     is(name, "unknown");
 

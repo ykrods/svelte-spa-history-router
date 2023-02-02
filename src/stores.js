@@ -25,6 +25,6 @@ export const currentURL = (() => {
     },
     setCurrent() {
       set(getCurrent());
-    }
-  }
+    },
+  };
 })();
