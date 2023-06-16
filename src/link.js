@@ -1,9 +1,18 @@
 import { push } from "./push.js";
 
+/**
+ * @param {HTMLElement} node
+ */
 export function link(node) {
+  /**
+   * @param {Event} event
+   */
   function onClick(event) {
     event.preventDefault();
-    push(node.getAttribute("href"));
+    const href = node.getAttribute("href");
+    if (href) {
+      push(href);
+    }
   }
 
   node.addEventListener("click", onClick);

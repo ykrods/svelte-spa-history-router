@@ -14,12 +14,15 @@ export const routeParams = derived(currentRoute, ($currentRoute) => {
 // Store of current location (to detect changes of query or hash)
 export const currentURL = (() => {
   function getCurrent() {
-    return new URL(window.location);
+    return new URL(window.location.href);
   }
   const { subscribe, set } = writable(getCurrent());
 
   return {
     subscribe,
+    /**
+     * @param {URL} url
+     */
     set(url) {
       set(url);
     },

@@ -1,10 +1,20 @@
 <script>
+  /**
+   * @typedef {import("svelte").SvelteComponent} SvelteComponent
+   *
+   * @typedef {Object} Route
+   * @property {string} path
+   * @property {SvelteComponent=} component
+   * @property {function=} resolver
+   */
+
   import { onMount } from 'svelte';
 
   import { currentPath, currentRoute, currentURL } from './stores.js';
   import { push } from './push.js';
 
-  // @type{Array.{path: string, component: SvelteComponent}}
+
+  /** @type {Array.<Route>} */
   export let routes = [];
 
   $: if (Array.isArray(routes) === false) {
@@ -12,7 +22,7 @@
   }
 
   onMount(() => {
-    const onPopState = (evt) => {
+    const onPopState = () => {
       currentPath.set(window.location.pathname);
       currentURL.setCurrent();
     };
@@ -24,8 +34,11 @@
     };
   });
 
-  $: onCurrentPathChanged($currentPath);
+  $: onCurrentPathChanged(/** @type string */ ($currentPath));
 
+  /**
+   * @param {string} currentPath
+   */
   async function onCurrentPathChanged(currentPath) {
     const route = resolveRoute(currentPath);
 
@@ -42,6 +55,10 @@
     currentRoute.set(route);
   }
 
+  /**
+   * @param {string} currentPath
+   * @return {Route}
+   */
   function resolveRoute(currentPath) {
 
     for (const route of routes) {

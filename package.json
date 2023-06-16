@@ -10,6 +10,7 @@
     "example:build:watch": "cd example && rollup -c -w",
     "example:serve": "node server.js",
     "test": "run-tiny-esm-test-runner tests/**/test_*.js",
+    "check": "svelte-check",
     "format": "prettier --write 'src/**/*.js'"
   },
   "peerDependencies": {
@@ -22,6 +23,7 @@
     "rollup": "*",
     "rollup-plugin-svelte": "*",
     "svelte": "*",
+    "svelte-check": "^3.4.3",
     "tiny-esm-test-runner": "*",
     "utf-8-validate": "*"
   },
