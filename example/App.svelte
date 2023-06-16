@@ -9,7 +9,7 @@
   import Admin from './Admin.svelte';
   import NotFound from "./NotFound.svelte";
 
-  function adminGuard(route) {
+  function adminGuard() {
     if ($user === null) {
       return redirect("/login");
     } else {
@@ -17,6 +17,9 @@
     }
   }
 
+  /**
+   * @param {import("../src/types").RouteState} route
+   */
   async function prefetchArticle(route) {
     const article = await getArticle(route.params.postId);
     if (article) {
@@ -32,8 +35,8 @@
     { path: '/', component: Home},
     { path: '/posts/(?<postId>.*)', resolver: prefetchArticle },
     { path: '/admin', resolver: adminGuard },
-    { path: '/login', resolver: _ => import("./Login.svelte") },
-    { path: '/query', resolver: _ => import("./Query.svelte") },
+    { path: '/login', resolver: () => import("./Login.svelte") },
+    { path: '/query', resolver: () => import("./Query.svelte") },
   ];
 </script>
 
