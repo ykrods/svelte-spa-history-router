@@ -1,7 +1,7 @@
-import puppeteer from "puppeteer";
-
-import test from "node:test";
 import assert from "node:assert";
+import test from "node:test";
+
+import { chromium } from "playwright";
 
 import { server } from "../server.js";
 
@@ -11,9 +11,7 @@ import { server } from "../server.js";
 async function browserFixture(test) {
   server.listen(18901);
 
-  const browser = await puppeteer.launch({
-    headless: "new"
-  });
+  const browser = await chromium.launch();
   const page = await browser.newPage();
   const serverUrl = "http://127.0.0.1:18901";
 
