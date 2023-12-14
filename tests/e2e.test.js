@@ -1,11 +1,9 @@
-import  puppeteer from 'puppeteer';
+import puppeteer from "puppeteer";
 
-import { assert } from 'tiny-esm-test-runner';
+import test from "node:test";
+import assert from "node:assert";
 
-import { server } from '../server.js';
-
-
-const { is, isNot, ok, ng } = assert;
+import { server } from "../server.js";
 
 /**
  * Fixture to provide browser
@@ -25,35 +23,40 @@ async function browserFixture(test) {
   }
 }
 
-testBasicRouting.parameters = [
-  ['/', "div.home", 'Home'],
-  ['/posts/test-param', "div.article", 'Test param'],
-  ['/posts/test/param/with/slash', "div.article", "Test param with path"],
-];
-export async function testBasicRouting([path, selector, expected]) {
-  await browserFixture(async (browser, page, serverUrl) => {
-    await page.goto(`${serverUrl}${path}`);
-    await page.waitForSelector(selector);
 
-    is(expected, await page.title());
-  });
-}
+test("basic routing", async (t) => {
+  const params = [
+    ['/', "div.home", 'Home'],
+    ['/posts/test-param', "div.article", 'Test param'],
+    ['/posts/test/param/with/slash', "div.article", "Test param with path"],
+  ];
+  for (const [ path, selector, title ] of params) {
+    await t.test(`basic routing: route ${path}`, async (t) => {
+      await browserFixture(async (browser, page, serverUrl) => {
+        await page.goto(`${serverUrl}${path}`);
+        await page.waitForSelector(selector);
 
-export async function testLink() {
+        assert.strictEqual(title, await page.title());
+      });
+    });
+  }
+});
+
+test("link", async () => {
   await browserFixture(async (browser, page, serverUrl) => {
     await page.goto(serverUrl);
     await page.waitForSelector('a[href="/posts/test-param"]');
 
     await page.click('a[href="/posts/test-param"]');
+
     await page.waitForSelector("div.article");
-
-    ok((await page.url()).includes('/posts/test-param'));;
-    is(await page.title(), 'Test param');
+    assert.ok((await page.url()).includes('/posts/test-param'));
+    assert.strictEqual(await page.title(), 'Test param');
   });
-}
+});
 
-export async function testBrowserBack() {
-  await browserFixture(async (browser, page, serverUrl) => {
+test("browser back", async () => {
+    await browserFixture(async (browser, page, serverUrl) => {
     await page.goto(serverUrl);
     await page.waitForSelector('a[href="/posts/test-param"]');
 
@@ -65,12 +68,12 @@ export async function testBrowserBack() {
     await page.goBack();
     await page.waitForTimeout(30);
 
-    ng((await page.url()).includes('/posts/test-param'));
-    is(await page.title(), 'Home');
+    assert.ok((await page.url()).includes('/posts/test-param') === false);
+    assert.strictEqual(await page.title(), 'Home');
   });
-}
+});
 
-export async function testFragment() {
+test("fragment", async () => {
   await browserFixture(async (browser, page, serverUrl) => {
     await page.goto(`${serverUrl}/posts/test-fragment`);
     await page.waitForSelector("div.article");
@@ -81,29 +84,29 @@ export async function testFragment() {
     await page.click('a[href="#bottom"]');
     const bottomY = await page.evaluate(() => window.scrollY);
 
-    ok(topY < bottomY);
+    assert.ok(topY < bottomY);
   });
-}
+});
 
-export async function testGuard() {
+test("guard", async () => {
   await browserFixture(async (browser, page, serverUrl) => {
     await page.goto(serverUrl);
     await page.waitForSelector("div.home");
 
     await page.click('a[href="/admin"]');
     // Redirected to login
-    ok((await page.url()).includes('/login'));
+    assert.ok((await page.url()).includes('/login'));
 
     // Do login
-    await page.waitForSelector("button");
+    await page.waitForSelector("button#login");
     await page.click('button#login');
 
     await page.click('a[href="/admin"]');
-    ok((await page.url()).includes('/admin'));
+    assert.ok((await page.url()).includes('/admin'));
   });
-}
+});
 
-export async function testQuery() {
+test("query", async () => {
   await browserFixture(async (browser, page, serverUrl) => {
     await page.goto(serverUrl);
     await page.waitForSelector("div.home");
@@ -111,17 +114,16 @@ export async function testQuery() {
     await page.click('a[href="/query"]');
     await page.waitForSelector("div.query");
     let name = await page.$eval('#name', e => e.innerText);
-    is(name, "unknown");
+    assert.equal(name, "unknown");
 
     await page.click('a[href="/query?name=foo"]');
     name = await page.$eval('#name', e => e.innerText);
-    is(name, "foo");
+    assert.equal(name, "foo");
 
     // Back
     await page.goBack();
     await page.waitForTimeout(30);
     name = await page.$eval('#name', e => e.innerText);
-    is(name, "unknown");
-
+    assert.equal(name, "unknown");
   });
-}
+});
