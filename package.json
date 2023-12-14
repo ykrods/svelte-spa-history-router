@@ -21,8 +21,7 @@
     "puppeteer": "21.6.1",
     "rollup": "4.9.0",
     "rollup-plugin-svelte": "7.1.6",
-    "svelte": "4.2.8",
-    "utf-8-validate": "6.0.3"
+    "svelte": "4.2.8"
   },
   "author": "ykrods",
   "license": "MIT",
