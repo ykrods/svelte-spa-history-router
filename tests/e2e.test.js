@@ -11,7 +11,9 @@ import { server } from "../server.js";
 async function browserFixture(test) {
   server.listen(18901);
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: "new"
+  });
   const page = await browser.newPage();
   const serverUrl = "http://127.0.0.1:18901";
 
