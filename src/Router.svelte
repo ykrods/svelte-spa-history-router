@@ -1,10 +1,15 @@
 <script>
+  /**
+   * @typedef { import("./types").Route } Route
+   */
+
   import { onMount } from 'svelte';
 
-  import { currentPath, currentRoute, currentURL } from './stores.js';
+  import { currentPath, routeState, currentURL } from './stores.js';
   import { push } from './push.js';
+  import { RouteState } from "./route_state.js";
 
-  // @type{Array.{path: string, component: SvelteComponent}}
+  /** @type { Array.<Route> } */
   export let routes = [];
 
   $: if (Array.isArray(routes) === false) {
@@ -12,7 +17,7 @@
   }
 
   onMount(() => {
-    const onPopState = (evt) => {
+    const onPopState = () => {
       currentPath.set(window.location.pathname);
       currentURL.setCurrent();
     };
@@ -24,39 +29,42 @@
     };
   });
 
-  $: onCurrentPathChanged($currentPath);
+  $: onCurrentPathChanged(/** @type string */ ($currentPath));
 
+  /**
+   * @param {string} currentPath
+   */
   async function onCurrentPathChanged(currentPath) {
-    const route = resolveRoute(currentPath);
+    const state = resolveRoute(currentPath);
 
-    if (typeof route.resolver === "function") {
-      const resolved = await Promise.resolve(route.resolver(route));
-      if (resolved.redirect) {
-        push(resolved.redirect);
-        return;
-      }
-      // if resolver returns `import(...)`, it needs to retrieve .default
-      route.component = resolved.default || resolved;
+    const redirect = await state.resolveComponent();
+    if (redirect) {
+      push(redirect);
+      return;
     }
 
-    currentRoute.set(route);
+    routeState.set(state);
   }
 
+  /**
+   * @param {string} currentPath
+   * @return {RouteState}
+   */
   function resolveRoute(currentPath) {
 
     for (const route of routes) {
       const re = new RegExp(`^${route.path}$`, 'i');
       const match = currentPath.match(re);
       if (match) {
-        return Object.assign({}, route, { params: match.groups, props: {}});
+        return new RouteState(route, match.groups, {});
       }
     };
 
     throw new Error(`No route for ${currentPath} exists.`);
   }
 
-  $: currentComponent = ($currentRoute && $currentRoute.component) || null;
-  $: currentProps = ($currentRoute && $currentRoute.props) || {};
+  $: currentComponent = ($routeState && $routeState.component) || null;
+  $: currentProps = ($routeState && $routeState.props) || {};
 </script>
 
 <svelte:component this="{currentComponent}" {...currentProps} />

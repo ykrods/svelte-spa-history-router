@@ -1,5 +1,8 @@
 import { currentPath, currentURL } from "./stores.js";
 
+/**
+ * @param {string} next
+ */
 export function push(next) {
   window.history.pushState({}, "", next);
 
