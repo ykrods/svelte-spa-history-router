@@ -7,7 +7,6 @@
  * @typedef { import("./types").ComponentModule } ComponentModule
  */
 
-
 export class RouteState {
   /**
    * @param {Route} route
@@ -31,15 +30,15 @@ export class RouteState {
       // NOTE: resolved could be a module namespece object
       // ( that is not regular object), so use Refrect
       if (Reflect.has(resolved, "redirect")) {
-        return (/** @type {Redirection} */(resolved)).redirect;
+        return /** @type {Redirection} */ (resolved).redirect;
       }
 
       // if resolver returns `import(...)`, it needs to retrieve .default
       if (Reflect.has(resolved, "default")) {
-        this.component = /** @type {ComponentModule} */(resolved).default;
+        this.component = /** @type {ComponentModule} */ (resolved).default;
         return;
       }
-      this.component = /** @type {ComponentType} */(resolved);
+      this.component = /** @type {ComponentType} */ (resolved);
     }
   }
 }
