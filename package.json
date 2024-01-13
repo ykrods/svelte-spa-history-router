@@ -1,7 +1,7 @@
 {
   "name": "svelte-spa-history-router",
   "version": "2.1.0",
-  "description": "History base router for Svelte3 SPA",
+  "description": "History base router for Svelte SPA",
   "type": "module",
   "main": "src/index.js",
   "svelte": "src/index.js",
@@ -14,7 +14,7 @@
     "check": "npx svelte-check"
   },
   "peerDependencies": {
-    "svelte": "4.2.8"
+    "svelte": "*"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "15.2.3",
@@ -37,7 +37,7 @@
   "keywords": [
     "router",
     "svelte",
-    "svelte3",
-    "spa"
+    "spa",
+    "HistoryAPI"
   ]
 }
