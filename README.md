@@ -184,6 +184,10 @@ store to detect URL changes (including query string or hash)
 
 ## ChangeLog
 
+### 2.1.1 (2024-01-13)
+
+* Support Types
+
 ### 2.1.0 (2021-04-29)
 
 * Add `currentURL` store to detect URL changes [PR6](https://github.com/ykrods/svelte-spa-history-router/pull/6)
