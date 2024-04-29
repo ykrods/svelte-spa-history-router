@@ -24,7 +24,7 @@ $ yarn add svelte-spa-history-router
 
 ## Usage
 
-Import `Route` and put into your main component (typically App.svelte).
+Import `Router` and put into your main component (typically App.svelte).
 
 For example:
 
@@ -184,9 +184,13 @@ store to detect URL changes (including query string or hash)
 
 ## ChangeLog
 
+### 2.1.2 (2024-04-29)
+
+* Support types [PR10](https://github.com/ykrods/svelte-spa-history-router/pull/10)
+
 ### 2.1.1 (2024-01-13)
 
-* Support Types
+* ~~Support Types~~ Add typecheck [PR9](https://github.com/ykrods/svelte-spa-history-router/pull/9)
 
 ### 2.1.0 (2021-04-29)
 
