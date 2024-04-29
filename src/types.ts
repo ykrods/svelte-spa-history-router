@@ -1,4 +1,5 @@
 import type { ComponentType } from "svelte";
+import type { Readable } from "svelte/store";
 
 import type { RouteState } from "./route_state.js";
 export type { RouteState } from "./route_state.js";
@@ -17,6 +18,11 @@ export type ComponentModule = {
 
 export type Redirection = {
   redirect: string,
+}
+
+export interface CurrentURL extends Readable<URL> {
+  set: (url: URL) => void
+  setCurrent: () => void
 }
 
 type ResolverFunc = (routeState: RouteState) => PromiseLike<ComponentType | ComponentModule | Redirection> | ComponentType | Redirection

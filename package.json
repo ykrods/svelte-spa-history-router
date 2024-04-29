@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.js",
   "svelte": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "example:build": "cd example && rollup -c",
     "example:build:watch": "cd example && rollup -c -w",

@@ -1,7 +1,13 @@
 import { currentPath, currentURL } from "./stores.js";
 
 /**
+ * Navigate to next page programmatically
+ *
  * @param {string} next
+ *
+ * @example
+ *
+ *   <button on:click={ () => push(`posts/${id}`) }>next</button>
  */
 export function push(next) {
   window.history.pushState({}, "", next);
