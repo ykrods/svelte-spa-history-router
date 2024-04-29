@@ -1,14 +1,22 @@
 import { writable, derived } from "svelte/store";
 
 /**
- * @typedef { import("./types.ts").Route } Route
- * @typedef { import("./route_state.js").RouteState } RouteState
+ * @template T
+ * @typedef { import("svelte/store").Writable<T> } Writable
  */
 
 /**
  * @template T
- * @typedef { import("svelte/store").Writable<T> } Writable
+ * @typedef { import("svelte/store").Readable<T> } Readable
  */
+
+/**
+ * @typedef { import("./types.ts").Route } Route
+ * @typedef { import("./types.ts").RouteParams } RouteParams
+ * @typedef { import("./types.ts").CurrentURL } CurrentURL
+ * @typedef { import("./route_state.js").RouteState } RouteState
+ */
+
 
 /**
  * Store to detect changes (internal use).
@@ -22,12 +30,20 @@ export const currentPath = writable(window.location.pathname);
  */
 export const routeState = writable(null);
 
-// Store of path variables (a bit convinient for getting $currentRoute.params).
+/**
+ * Store of captured variables in path
+ *
+ * @type Readable<RouteParams>
+ */
 export const routeParams = derived(routeState, ($routeState) => {
   return $routeState ? $routeState.params || {} : {};
 });
 
-// Store of current location (to detect changes of query or hash)
+/**
+ * Store of current location (to detect changes of query or hash)
+ *
+ * @type CurrentURL
+ */
 export const currentURL = (() => {
   function getCurrent() {
     return new URL(window.location.href);

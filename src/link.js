@@ -1,7 +1,13 @@
 import { push } from "./push.js";
 
 /**
- * @param {HTMLElement} node
+ * Svelte action to make `<a>` work as navigation of svelte-spa-history-router
+ *
+ * @param {HTMLElement} node - target `<a>`
+ *
+ * @example
+ *
+ *   <a use:link href="/">top</a>
  */
 export function link(node) {
   /**
