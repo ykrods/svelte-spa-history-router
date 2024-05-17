@@ -5,6 +5,11 @@
   "type": "module",
   "main": "src/index.js",
   "svelte": "src/index.js",
+  "exports": {
+    ".": {
+      "svelte": "src/index.js"
+    }
+  },
   "types": "src/index.d.ts",
   "scripts": {
     "dev": "cd examples/app-svelte4 && npm run dev",
