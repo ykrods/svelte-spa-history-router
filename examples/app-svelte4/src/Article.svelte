@@ -1,6 +1,5 @@
 <script>
-  import { link } from '../src/index.js';
-  import { routeParams } from '../src/stores.js';
+  import { link, routeParams } from 'svelte-spa-history-router';
 
   export let article;
 

@@ -8,6 +8,9 @@ import process from 'node:process';
 
 import { fileURLToPath } from 'node:url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+// const __dirname = new URL('.', import.meta.url).pathname;
+
 function log(code, request) {
   console.log(`[${(new Date()).toISOString()}] (${code}) ${request.method} ${request.url}`);
 }
@@ -82,7 +85,7 @@ function createServer(options) {
 }
 
 export const server = createServer({
-  dir: "example/dist",
+  dir: path.join(__dirname, "dist"),
   extMap: {
     ".css": "text/css",
     ".js": "text/javascript",

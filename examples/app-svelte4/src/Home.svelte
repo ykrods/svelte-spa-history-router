@@ -1,10 +1,9 @@
 <script>
-  import { link, push } from '../src/index.js';
+  import { link, push } from 'svelte-spa-history-router';
 
   import { getArticles } from './data-source.js';
 
   let articlesPromise = getArticles();
-
 </script>
 
 <svelte:head>

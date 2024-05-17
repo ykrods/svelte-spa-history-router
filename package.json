@@ -7,23 +7,14 @@
   "svelte": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "example:build": "cd example && rollup -c",
-    "example:build:watch": "cd example && rollup -c -w",
-    "example:serve": "node server.js",
+    "dev": "cd examples/app-svelte4 && npm run dev",
     "test": "node --test",
     "format": "prettier --write 'src/**/*.js'",
     "check": "npx svelte-check"
   },
-  "peerDependencies": {
-    "svelte": "*"
-  },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "15.2.3",
     "playwright": "1.40.1",
-    "prettier": "3.2.1",
-    "rollup": "4.9.5",
-    "rollup-plugin-svelte": "7.1.6",
-    "svelte": "4.2.8"
+    "prettier": "3.2.1"
   },
   "author": "ykrods",
   "license": "MIT",

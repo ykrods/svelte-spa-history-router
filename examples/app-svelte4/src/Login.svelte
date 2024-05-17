@@ -1,5 +1,5 @@
 <script>
-  import { push } from '../src/push.js';
+  import { push } from 'svelte-spa-history-router';
 
   import { user } from './store.js';
 

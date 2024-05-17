@@ -1,6 +1,5 @@
 <script>
-  import { link } from "../src/link.js";
-  import { currentURL } from "../src/stores.js";
+  import { link, currentURL } from "svelte-spa-history-router";
 
   $: name = $currentURL.searchParams.get("name") || 'unknown';
 </script>

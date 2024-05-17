@@ -1,5 +1,5 @@
 .DS_Store
 
 node_modules
-example/dist
-!example/dist/index.html
+examples/app-svelte4/dist
+!examples/app-svelte4/dist/index.html

@@ -1,8 +1,13 @@
+import child_process from "node:child_process";
+
 import svelte from 'rollup-plugin-svelte';
 import nodeResolve from '@rollup/plugin-node-resolve';
 
+
+const production = !process.env.ROLLUP_WATCH;
+
 export default {
-  input: 'main.js',
+  input: 'src/main.js',
   output: {
     sourcemap: true,
     name: 'app',
@@ -24,10 +29,28 @@ export default {
       browser: true,
       dedupe: ['svelte']
     }),
+
+    !production && serve(),
   ],
   watch: {
-    include: ['./**', '../src/**'],
+    include: ['./src/**', '../../src/**'],
     chokidar: false,
     clearScreen: false,
   },
 };
+
+function serve() {
+  let started = false;
+  return {
+    writeBundle() {
+      if (!started) {
+        started = true;
+
+        child_process.spawn("npm", ["run", "start"], {
+          stdio: ["ignore", "inherit", "inherit"],
+          shell: true
+        });
+      }
+    }
+  };
+}
