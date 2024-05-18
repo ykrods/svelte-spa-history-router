@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { chromium } from "playwright";
 
-import { server } from "../examples/app-svelte4/server.js";
+import { server } from "../server.js";
 
 /**
  * Fixture to provide browser
