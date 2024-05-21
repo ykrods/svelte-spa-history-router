@@ -2,7 +2,7 @@
 
 import { SvelteComponent, ComponentType } from 'svelte'
 
-export { Route, RouteParams, Redirection } from "./types.ts"
+export { Route, RouteParams, RouteState, Redirection, SyncResolver, AsyncResolver } from "./types.ts"
 
 /**
  * Router component
