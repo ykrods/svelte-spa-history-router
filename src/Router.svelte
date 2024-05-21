@@ -96,6 +96,10 @@
     }
     if (!component) throw new Error("Component is not specified");
 
+    if (Object.keys(params).length !== 0) {
+      props.params = params;
+    }
+
     return /** @type {RouteState} */({ params, component, props });
   }
 

@@ -3,6 +3,7 @@
   import { Router, push, link, redirect } from "svelte-spa-history-router";
 
   import Home from "./pages/Home.svelte";
+  import Guide from "./pages/Guide.svelte";
   import NotFound from "./pages/NotFound.svelte";
 
   import { getArticle } from "./articles.js";
@@ -30,6 +31,10 @@
       resolver: prefetchArticle,
     },
     {
+      path: "/guide/(?<guideId>\\d+)",
+      component: Guide,
+    },
+    {
       path: "/admin",
       resolver: () => {
         if (user === "anonymous") {
@@ -47,6 +52,7 @@
     <nav>
       <a use:link href="/">home</a> |
       <a use:link href="/blog">blog</a> |
+      <a use:link href="/guide/1">guide(1)</a> |
       <a use:link href="/admin">admin</a> |
       user: { user }
       {#if user === "anonymous"}
