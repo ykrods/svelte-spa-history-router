@@ -13,5 +13,5 @@
       "DOM"
     ],
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "examples/app-svelte4/src/**/*"]
 }

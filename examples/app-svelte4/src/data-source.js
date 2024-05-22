@@ -4,6 +4,10 @@
  * Dummy APIs for fetch data
  */
 
+/**
+ * @param {Number} time
+ * @returns Promise<void>
+ */
 function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 };
@@ -37,6 +41,9 @@ export async function getArticles() {
   return articles;
 }
 
+/**
+ * @param {string} id
+ */
 export async function getArticle(id) {
   return articles.find(a => a.id === id);
 }
