@@ -1,8 +1,6 @@
 import type { ComponentType } from "svelte";
 import type { Readable } from "svelte/store";
 
-import type { RouteState } from "./route_state.js";
-export type { RouteState } from "./route_state.js";
 
 export type RouteParams = {
   [key: string]: string
@@ -25,10 +23,28 @@ export interface CurrentURL extends Readable<URL> {
   setCurrent: () => void
 }
 
-type ResolverFunc = (routeState: RouteState) => PromiseLike<ComponentType | ComponentModule | Redirection> | ComponentType | Redirection
+export type RouteState = {
+  component: ComponentType,
+  params: RouteParams,
+  props: RouteProps,
+}
+
+export type ResolverArgs = {
+  path: string,
+  params: RouteParams,
+  props: RouteProps,
+}
+
+export type SyncResolver = (
+  args: ResolverArgs
+) => ComponentType | Redirection
+
+export type AsyncResolver = (
+  args: ResolverArgs
+) => PromiseLike<ComponentType | ComponentModule | Redirection>
 
 export type Route = {
   path: string,
   component?: ComponentType,
-  resolver?: ResolverFunc,
+  resolver?: SyncResolver | AsyncResolver,
 }

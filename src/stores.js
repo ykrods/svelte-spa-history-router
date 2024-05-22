@@ -14,7 +14,7 @@ import { writable, derived } from "svelte/store";
  * @typedef { import("./types.ts").Route } Route
  * @typedef { import("./types.ts").RouteParams } RouteParams
  * @typedef { import("./types.ts").CurrentURL } CurrentURL
- * @typedef { import("./route_state.js").RouteState } RouteState
+ * @typedef { import("./types.ts").RouteState } RouteState
  */
 
 
