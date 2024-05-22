@@ -41,7 +41,7 @@ export type SyncResolver = (
 
 export type AsyncResolver = (
   args: ResolverArgs
-) => PromiseLike<ComponentType | ComponentModule | Redirection>
+) => Promise<ComponentType | ComponentModule | Redirection>
 
 export type Route = {
   path: string,
