@@ -36,7 +36,7 @@ export const routeState = writable(null);
  * @type Readable<RouteParams>
  */
 export const routeParams = derived(routeState, ($routeState) => {
-  return $routeState ? $routeState.params || {} : {};
+  return ($routeState && $routeState.params) ?? {};
 });
 
 /**

@@ -29,7 +29,11 @@ function getPathname(reqUrl) {
  */
 function createServer(options) {
   const getContentType = (contentPath) => {
-    return options.extMap[path.extname(contentPath)] || null;
+    const ret = options.extMap[path.extname(contentPath)];
+    if (!ret) {
+      throw new Error("Unknown file type");
+    }
+    return ret;
   };
   const root = path.resolve(options.dir);
 
@@ -54,9 +58,6 @@ function createServer(options) {
     try {
       const content = await fs.readFile(contentPath);
       const contentType = getContentType(contentPath);
-      if (contentType === null) {
-        throw new Error("Unknown file type");
-      }
 
       response.writeHead(200, {'Content-Type': contentType });
       response.end(content);

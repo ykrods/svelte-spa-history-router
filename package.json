@@ -13,7 +13,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "dev": "cd examples/app-svelte4 && npm run dev",
-    "test": "node --test",
+    "test": "cd examples/app-svelte4 && npm run test",
     "format": "prettier --write 'src/**/*.js'",
     "check": "npx svelte-check"
   },

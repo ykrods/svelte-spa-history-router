@@ -1,7 +1,7 @@
 <script>
   import { link, currentURL } from "svelte-spa-history-router";
 
-  $: name = $currentURL.searchParams.get("name") || 'unknown';
+  $: name = $currentURL.searchParams.get("name") ?? 'unknown';
 </script>
 <svelte:head>
   <title>query</title>

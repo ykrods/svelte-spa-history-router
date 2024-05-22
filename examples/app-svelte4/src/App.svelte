@@ -1,4 +1,8 @@
 <script>
+  /**
+   * @typedef {import("svelte-spa-history-router").AsyncResolver} AsyncResolver
+   */
+
   import { Router, link, redirect } from 'svelte-spa-history-router';
 
   import { user } from './store.js';
@@ -18,13 +22,13 @@
   }
 
   /**
-   * @param {import("../src/types").RouteState} route
+   * @type {AsyncResolver}
    */
-  async function prefetchArticle(route) {
-    const article = await getArticle(route.params.postId);
+  async function prefetchArticle({ params, props}) {
+    const article = await getArticle(params.postId);
     if (article) {
       // pass value to component props
-      route.props.article = article;
+      props.article = article;
       return import("./Article.svelte");
     } else {
       return NotFound;
