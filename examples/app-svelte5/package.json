@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "test": "playwright test"
+    "test": "playwright test",
+    "check": "npx svelte-check"
   },
   "author": "ykrods",
   "license": "MIT",

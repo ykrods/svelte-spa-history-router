@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "checkJs": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "lib": [
+      "es2017",
+      "es2018.regexp",
+      "DOM"
+    ],
+  },
+  "include": ["src/**/*"]
+}

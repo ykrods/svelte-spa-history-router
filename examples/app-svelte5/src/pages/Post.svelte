@@ -1,5 +1,5 @@
 <script>
-  import { link, routeParams } from "svelte-spa-history-router";
+  import { link } from "svelte-spa-history-router";
 
   export let article;
 </script>

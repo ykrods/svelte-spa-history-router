@@ -1,3 +1,4 @@
+/** @type {(ms: Number) => Promise<void>} */
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 const articles = [
@@ -34,6 +35,9 @@ export async function getArticles() {
   return articles;
 }
 
+/**
+ *  @param {string} id
+ */
 export async function getArticle(id) {
   return articles.find(a => a.id === id);
 }

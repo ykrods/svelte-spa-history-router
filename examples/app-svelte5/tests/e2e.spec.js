@@ -1,14 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-test("basic routing", async({ page }) => {
+test.describe("basic routing", () => {
   const params = [
     ['/', "main.home", 'Home'],
     ['/blog/posts/2024/03/01/baz', "main.post", 'baz'],
   ];
   for (const [ path, selector, title ] of params) {
-    await page.goto(path);
-    await page.waitForSelector(selector);
-    await expect(page).toHaveTitle(title);
+    test(`${path} title should be ${title}`, async({ page }) => {
+      await page.goto(path);
+      await page.waitForSelector(selector);
+      await expect(page).toHaveTitle(title);
+    });
   }
 });
 
