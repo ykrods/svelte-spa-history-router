@@ -184,9 +184,9 @@ store to detect URL changes (including query string or hash)
 
 ## ChangeLog
 
-### 2.1.0-next.0
+### 2.2.0-next.0
 
-* [PR12](https://github.com/ykrods/svelte-spa-history-router/pull/12)
+* Add the way to get routing params to via props [PR12](https://github.com/ykrods/svelte-spa-history-router/pull/12)
 * Refactor (changes: [2.1.2...7b7795b](https://github.com/ykrods/svelte-spa-history-router/compare/2.1.2...7b7795b2675c452a1a189d3931c0c4c9abb04c51) )
 
 ### 2.1.2 (2024-04-29)
