@@ -184,6 +184,10 @@ store to detect URL changes (including query string or hash)
 
 ## ChangeLog
 
+### 2.2.0-next.1
+
+* Fix component type on svelte5 [PR13](https://github.com/ykrods/svelte-spa-history-router/pull/13)
+
 ### 2.2.0-next.0
 
 * Add the way to get routing params to via props [PR12](https://github.com/ykrods/svelte-spa-history-router/pull/12)
