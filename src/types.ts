@@ -10,8 +10,8 @@ export type RouteProps = {
   [key: string]: any
 }
 
-export type ComponentModule = {
-  default: ComponentType,
+export type ComponentModule<T = ComponentType> = {
+  default: T,
 }
 
 export type Redirection = {
@@ -23,8 +23,8 @@ export interface CurrentURL extends Readable<URL> {
   setCurrent: () => void
 }
 
-export type RouteState = {
-  component: ComponentType,
+export type RouteState<T = ComponentType> = {
+  component: T,
   params: RouteParams,
   props: RouteProps,
 }
@@ -35,16 +35,16 @@ export type ResolverArgs = {
   props: RouteProps,
 }
 
-export type SyncResolver = (
+export type SyncResolver<T = ComponentType> = (
   args: ResolverArgs
-) => ComponentType | Redirection
+) => T | Redirection
 
-export type AsyncResolver = (
+export type AsyncResolver<T = ComponentType> = (
   args: ResolverArgs
-) => Promise<ComponentType | ComponentModule | Redirection>
+) => Promise<T | ComponentModule<T> | Redirection>
 
-export type Route = {
+export type Route<T = ComponentType> = {
   path: string,
-  component?: ComponentType,
-  resolver?: SyncResolver | AsyncResolver,
+  component?: T,
+  resolver?: SyncResolver<T> | AsyncResolver<T>,
 }
