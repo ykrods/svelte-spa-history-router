@@ -1,5 +1,7 @@
 <script lang="ts">
-  import type { ResolverArgs } from "svelte-spa-history-router";
+  import type { Component } from "svelte";
+
+  import type { Route, AsyncResolver } from "svelte-spa-history-router";
   import { Router, push, link, redirect } from "svelte-spa-history-router";
 
   import Home from "./pages/Home.svelte";
@@ -10,11 +12,8 @@
 
   let user = $state("anonymous");
 
-  /**
-   * FIXME: better to Use AsyncResolver type, but ComponentType cause error on currently svelte build
-   */
-  async function prefetchArticle({ params, props }: ResolverArgs) {
-    const article = await getArticle(params.postId);
+  const prefetchArticle: AsyncResolver<Component<any, any, any>> = async ({ params, props }) => {
+    const article = await getArticle(params.postId ?? "");
     if (article) {
       props.article = article;
       return import("./pages/Post.svelte");
@@ -23,7 +22,7 @@
     }
   }
 
-  const routes = [
+  const routes: Route<Component<any, any, any>>[] = [
     { path: "/", component: Home },
     { path: "/blog", resolver: () => import("./pages/Blog.svelte") },
     {
