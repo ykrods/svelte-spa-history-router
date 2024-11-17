@@ -1,6 +1,6 @@
 {
   "name": "svelte-spa-history-router",
-  "version": "2.2.0-next.2",
+  "version": "2.2.0",
   "description": "History base router for Svelte SPA",
   "type": "module",
   "main": "src/index.js",
