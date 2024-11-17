@@ -1,6 +1,10 @@
 # svelte-spa-history-router
 
-History base router for Svelte 3 SPA (Single Page Application).
+History base router for [Svelte](https://svelte.dev/) SPA (Single Page Application).
+
+> [!TIP]
+> The offcial routing library of Svelte is [SvelteKit](https://svelte.dev/docs/kit/introduction). This library is intented to be used for small project.
+
 
 ## Features
 
@@ -58,9 +62,24 @@ For example:
 
 ### routeParams
 
-`routeParams` is a store to contain matched value to current route.
+Matched paramaters is passed to component as `params` property.
 
 For example:
+
+```html
+# Article.svelte
+
+<script lang="ts">
+  let { params } = $props();
+
+  const postId = $derived(parseInt(params.postId));
+</script>
+<div>
+  { postId }
+</div>
+```
+
+[Additional] For svelte4, `routeParams` is a store to contain matched value to current route.
 
 ```html
 # Article.svelte
@@ -105,7 +124,7 @@ Example: code spliting (dynamic import)
   import { Router } from 'svelte-spa-history-router';
 
   const routes = [
-    { path: '/', resolver: _ => import("Home.svelte") },
+    { path: '/', resolver: () => import("Home.svelte") },
   ];
 </script>
 <Router {routes}/>
@@ -120,11 +139,11 @@ Example: dynamic routing and pass value to component props.
   import Article from "./Article.svelte";
   import NotFound from "./NotFound.svelte";
 
-  async function prefetchArticle(route) {
-    const article = await getArticle(route.params.postId);
+  async function prefetchArticle({ params, props }) {
+    const article = await getArticle(params.postId);
     if (article) {
       // pass value to component props
-      route.props.article = article;
+      props.article = article;
       return Article;
     } else {
       return NotFound;
@@ -183,6 +202,10 @@ store to detect URL changes (including query string or hash)
 [example](https://github.com/ykrods/svelte-spa-history-router/tree/master/example)
 
 ## ChangeLog
+
+### 2.2.0
+
+* Support Svelte5
 
 ### 2.2.0-next.1
 
