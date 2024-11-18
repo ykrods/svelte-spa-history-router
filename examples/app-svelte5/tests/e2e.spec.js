@@ -55,3 +55,15 @@ test("browser back", async ({ page }) => {
   await expect(page).toHaveTitle("Home");
   await expect(page).toHaveURL("/");
 });
+
+test.describe("route params", () => {
+  for (const id of [1, 2]) {
+    test(`with id=${id}`, async({ page }) => {
+      await page.goto(`/guide/${id}`);
+      await page.waitForSelector("main.guide");
+      await expect(page).toHaveTitle(`Guide ${id}`);
+      expect(await page.innerText(".routeParams")).toBe(`routeParams: ${id}`);
+      expect(await page.innerText(".params")).toBe(`params: ${id}`);
+    });
+  }
+});

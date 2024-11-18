@@ -33,6 +33,8 @@ export const routeState = writable(null);
 /**
  * Store of captured variables in path
  *
+ * scheduled to be deprecated after svelte5 released
+ *
  * @type Readable<RouteParams>
  */
 export const routeParams = derived(routeState, ($routeState) => {

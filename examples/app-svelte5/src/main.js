@@ -2,8 +2,7 @@ import { mount } from "svelte";
 
 import App from './App.svelte';
 
-const target = document.getElementById('app');
-if (!target) throw new Error("cannot find #app");
+const target = /** @type {HTMLElement} */(document.getElementById('app'));
 
 const app = mount(App, { target });
 

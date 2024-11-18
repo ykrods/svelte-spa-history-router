@@ -1,7 +1,5 @@
 <script>
   /**
-   * @typedef { import("svelte").ComponentType } ComponentType
-   *
    * @typedef { import("./types").ComponentModule } ComponentModule
    * @typedef { import("./types").Route } Route
    * @typedef { import("./types").Redirection } Redirection
@@ -91,10 +89,14 @@
       if (Reflect.has(resolved, "default")) {
         component = /** @type {ComponentModule} */(resolved).default;
       } else {
-        component = /** @type {ComponentType} */(resolved);
+        component = /** @type {ComponentModule["default"]} */(resolved);
       }
     }
     if (!component) throw new Error("Component is not specified");
+
+    if (Object.keys(params).length !== 0) {
+      props.params = params;
+    }
 
     return /** @type {RouteState} */({ params, component, props });
   }
