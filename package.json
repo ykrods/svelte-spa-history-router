@@ -14,15 +14,13 @@
   "scripts": {
     "dev": "cd examples/app-svelte4 && npm run dev",
     "test": "cd examples/app-svelte4 && npm run test",
-    "format": "prettier --write 'src/**/*.js'",
     "check": "npx svelte-check"
   },
   "peerDependencies": {
     "svelte": "*"
   },
   "devDependencies": {
-    "prettier": "3.3.3",
-    "svelte": "4.2.19"
+    "svelte": "5.16.0"
   },
   "author": "ykrods",
   "license": "MIT",
