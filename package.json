@@ -14,13 +14,16 @@
   "scripts": {
     "dev": "cd examples/app-svelte4 && npm run dev",
     "test": "cd examples/app-svelte4 && npm run test",
-    "check": "npx svelte-check"
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
   },
   "peerDependencies": {
     "svelte": "*"
   },
   "devDependencies": {
-    "svelte": "5.16.0"
+    "@tsconfig/svelte": "5.0.4",
+    "svelte": "5.16.0",
+    "svelte-check": "4.1.1",
+    "typescript": "5.7.2"
   },
   "author": "ykrods",
   "license": "MIT",
