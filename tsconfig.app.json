@@ -14,7 +14,14 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "paths": {
+      "svelte-spa-history-router": ["src"],
+      "svelte-spa-history-router/*": ["src/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
+  "include": [
+    "src/**/*.ts", "src/**/*.js", "src/**/*.svelte",
+    "example/**/*.ts", "example/**/*.js", "example/**/*.svelte"
+  ]
 }

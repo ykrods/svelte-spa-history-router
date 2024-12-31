@@ -1,108 +1,137 @@
+<!--
+@component
+
+Router component
+
+@example
 <script>
-  /**
-   * @typedef { import("./types").ComponentModule } ComponentModule
-   * @typedef { import("./types").Route } Route
-   * @typedef { import("./types").Redirection } Redirection
-   * @typedef { import("./types").RouteParams } RouteParams
-   * @typedef { import("./types").RouteState } RouteState
-   */
+  import { Router } from "svelte-spa-history-router";
 
-  import { onMount } from 'svelte';
+  import Top from "./Top.svelte"
+  import NotFound from "./NotFound.svelte"
 
-  import { currentPath, routeState, currentURL } from './stores.js';
+  const routes = [
+    { path: "/", component: Top },
+    { path: "/posts/(?<postId>.*)", resolver: () => import("./Article.svelte") },
+    { path: ".*", component: NotFound },
+  ];
+</script>
+<Router {routes}/>
+-->
+<script lang="ts">
+  import type { Component } from "svelte";
+  import type { Route, NavigationEvent } from "./types";
+
+  import * as SpaEvent from "./spa-event";
+  import { setSpaContext } from "./spa-context";
   import { push } from './push.js';
 
-  /** @type { Array.<Route> } */
-  export let routes = [];
+  type Dest = { component: Component, props: Record<string, any> }
 
-  $: if (Array.isArray(routes) === false) {
-    throw new Error(`routes should be Array, given: ${typeof routes}`);
-  }
 
-  onMount(() => {
+  let {
+    routes
+  }: {
+    routes: Route<any>[]
+  } = $props();
+
+  let currentURL: URL = $state(new URL(window.location.href));
+  // Exclude queryString and hash
+  let currentPath: string = $derived.by(() => currentURL.pathname);
+  let destination: Dest | undefined = $state(undefined);
+
+
+  setSpaContext({
+    currentURL: () => currentURL
+  });
+
+  $effect(() => {
+    if (Array.isArray(routes) === false) {
+      throw new Error(`routes should be Array, given: ${typeof routes}`);
+    }
+  })
+
+  $effect(() => {
+    const onNavigate = (evt: NavigationEvent) => {
+      const url = new URL(evt.detail.next, window.location.origin);
+
+      if (url.toString() !== currentURL.toString()) {
+        currentURL = url;
+        window.history.pushState({}, "", evt.detail.next);
+      }
+    }
+    window.addEventListener(SpaEvent.NAVIGATE, onNavigate);
+
     const onPopState = () => {
-      currentPath.set(window.location.pathname);
-      currentURL.setCurrent();
-    };
-
+      currentURL = new URL(window.location.href)
+    }
     window.addEventListener('popstate', onPopState);
 
     return () => {
+      window.removeEventListener(SpaEvent.NAVIGATE, onNavigate);
       window.removeEventListener('popstate', onPopState);
     };
   });
 
-  $: onCurrentPathChanged(/** @type string */ ($currentPath));
-
-  /**
-   * @param {string} currentPath
-   */
-  async function onCurrentPathChanged(currentPath) {
+  $effect(() => {
     const { route, params } = resolveRoute(currentPath);
 
-    const result = await resolveRouteState(route, params);
-    if (typeof result === "string") {
-      push(result);
-      return;
-    }
-    routeState.set(/** @type {RouteState} */(result));
-  }
+    createDestination(route, params).then((result) => {
+      if (typeof result === "string") {
+        push(result);
+        return;
+      }
+      destination = result;
+    });
+  })
 
-  /**
-   * @param {string} currentPath
-   * @return {{ route: Route, params: RouteParams }}
-   */
-  function resolveRoute(currentPath) {
-
+  function resolveRoute(path: string): {
+    route: Route,
+    params: Record<string, string>
+  } {
     for (const route of routes) {
       const re = new RegExp(`^${route.path}$`, 'i');
-      const match = currentPath.match(re);
+      const match = path.match(re);
       if (match) {
         return { route, params: match.groups ?? {} };
       }
     };
-
-    throw new Error(`No route for ${currentPath} exists.`);
+    throw new Error(`No route for ${path} exists.`);
   }
 
-  /**
-   * @param {Route} route
-   * @param {RouteParams} params
-   * @returns {Promise<string | RouteState>}
-   */
-  async function resolveRouteState(route, params) {
-    let component = route.component;
-    const props = {};
 
-    if (typeof route.resolver === "function") {
-      const resolved = await Promise.resolve(
-        route.resolver({ path: route.path, params, props })
-      );
+  async function createDestination(
+    route: Route,
+    params: Record<string, string>
+  ): Promise<Dest | string> {
+    if (route.component) {
+      return { component: route.component, props: { params } };
 
-      // NOTE: resolved could be a module namespece object
-      // ( that is not regular object), so use Refrect
-      if (Reflect.has(resolved, "redirect")) {
-        return /** @type {Redirection} */(resolved).redirect;
-      }
+    } else if (typeof route.resolver === "function") {
+      const resolved = await Promise.resolve(route.resolver(params));
 
-      // if resolver returns `import(...)`, it needs to retrieve .default
-      if (Reflect.has(resolved, "default")) {
-        component = /** @type {ComponentModule} */(resolved).default;
+      if ("redirect" in resolved) {
+        return resolved.redirect;
+      } if ("component" in resolved) {
+        return resolved;
+      } else if ("default" in resolved) {
+        return { component: resolved.default, props: {} };
       } else {
-        component = /** @type {ComponentModule["default"]} */(resolved);
+        // assume resolved as component
+        // XXX: is there a way to check if a object is svelte component or not?
+        return { component: resolved, props: {} };
       }
-    }
-    if (!component) throw new Error("Component is not specified");
 
-    if (Object.keys(params).length !== 0) {
-      props.params = params;
+    } else {
+      const msg = `component or resolver is missing for ${route.path}`
+      console.error(msg)
+      throw new Error(msg);
     }
-
-    return /** @type {RouteState} */({ params, component, props });
   }
 
-  $: currentComponent = ($routeState && $routeState.component) ?? null;
-  $: currentProps = ($routeState && $routeState.props) ?? {};
+  let CurrentComponent = $derived.by(() => destination?.component);
+  let currentProps = $derived.by(() => destination?.props ?? {});
 </script>
-
-<svelte:component this={currentComponent} {...currentProps} />
+{#if CurrentComponent }
+  <CurrentComponent {...currentProps}></CurrentComponent>
+{/if}

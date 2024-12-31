@@ -1,50 +1,46 @@
-import type { ComponentType } from "svelte";
-import type { Readable } from "svelte/store";
+import type { Component, ComponentProps } from "svelte";
+
+import * as SpaEvent from "./spa-event"
+
+export type NavigationEvent = CustomEvent<{ next: string }>;
 
 
-export type RouteParams = {
-  [key: string]: string
+declare global {
+  interface WindowEventMap {
+    [SpaEvent.NAVIGATE]: NavigationEvent
+  }
 }
 
-export type RouteProps = {
-  [key: string]: any
+
+export interface Redirection {
+  redirect: string
 }
 
-export type ComponentModule<T = ComponentType> = {
-  default: T,
+export interface Destination<T extends Component<any>> {
+  component: T
+  props: ComponentProps<T>
 }
 
-export type Redirection = {
-  redirect: string,
+type DestMap<T extends Component<any>> = T extends unknown ? Destination<T>: never;
+
+export type Route<T extends Component<any> = Component> = {
+  path: string
+  component?: T
+  resolver?: (params: Record<string, string>) =>
+    | DestMap<T>
+    | T
+    | Redirection
+    | Promise<DestMap<T> | T | Redirection | { default: T }>
 }
 
-export interface CurrentURL extends Readable<URL> {
-  set: (url: URL) => void
-  setCurrent: () => void
+export interface SpaContext {
+  currentURL(): URL
 }
 
-export type RouteState<T = ComponentType> = {
-  component: T,
-  params: RouteParams,
-  props: RouteProps,
-}
-
+/*
 export type ResolverArgs = {
   path: string,
   params: RouteParams,
   props: RouteProps,
 }
-
-export type SyncResolver<T = ComponentType> = (
-  args: ResolverArgs
-) => T | Redirection
-
-export type AsyncResolver<T = ComponentType> = (
-  args: ResolverArgs
-) => Promise<T | ComponentModule<T> | Redirection>
-
-export type Route<T = ComponentType> = {
-  path: string,
-  component?: T,
-  resolver?: SyncResolver<T> | AsyncResolver<T>,
-}
+*/
