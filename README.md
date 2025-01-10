@@ -169,7 +169,7 @@ Example: guard
 
 (Added in v2.0.0)
 
-(Changed resolver interface in v3.0.0-next.0)
+(Changed resolver interface in v3.0.0-next.1)
 
 ### currentURL()
 
@@ -186,7 +186,7 @@ state to detect URL changes (including query string or hash)
 
 (Added in v2.1.0)
 
-(Replaced to svelte5 `$state()` in v3.0.0-next.0)
+(Replaced to svelte5 `$state()` in v3.0.0-next.1)
 
 ### Typing
 
@@ -220,8 +220,9 @@ svelte-spa-history-router provides `Route` type to check combination of componen
     },
   ];
 </script>
+```
 
-(Added in v3.0.0-next.0)
+(Added in v3.0.0-next.1)
 
 ### Full example:
 
@@ -229,7 +230,7 @@ svelte-spa-history-router provides `Route` type to check combination of componen
 
 ## ChangeLog
 
-### 3.0.0-next.0
+### 3.0.0-next.1
 
 * *[Breaking change]* Drop Svelte4 support
 
