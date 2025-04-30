@@ -1,5 +1,5 @@
 <script>
-  import { link, currentURL } from "svelte-spa-history-router";
+  import { link, currentURL } from "../lib/index"
 
 
   let name = $derived(currentURL().searchParams.get("name") ?? 'unknown');

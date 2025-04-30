@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Route } from "svelte-spa-history-router"
-  import { Router, link, push, redirect } from "svelte-spa-history-router"
+  import type { Route } from "./lib/index"
+  import { Router, link, push, redirect } from "./lib/index"
 
   import type Admin from "./pages/Admin.svelte"
   import type Blog from "./pages/Blog.svelte"
@@ -13,7 +13,7 @@
   import Params from "./pages/Params.svelte"
   import Top from "./pages/Top.svelte"
 
-  import { getArticle } from "./lib/getArticle"
+  import { getArticle } from "./getArticle"
 
 
   const routes: [

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { link } from "svelte-spa-history-router"
+  import { link } from "../lib/index"
 
-  import { getArticles } from "../lib/getArticles"
+  import { getArticles } from "../getArticles"
 </script>
 <svelte:head>
   <title>Blog</title>

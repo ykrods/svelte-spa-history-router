@@ -7,7 +7,7 @@ import * as SpaEvent from "./spa-event"
  *
  * @example
  *
- *   <button on:click={ () => push(`posts/${id}`) }>next</button>
+ *   <button onclick={ () => push(`posts/${id}`) }>next</button>
  */
 export function push(next: string) {
   const evt: NavigationEvent = new CustomEvent(

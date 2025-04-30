@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Article } from "../types"
 
-  import { link } from "svelte-spa-history-router"
+  import { link } from "../lib/index"
 
   let { article }: { article: Article } = $props()
 </script>

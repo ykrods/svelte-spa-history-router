@@ -3,15 +3,17 @@
   "version": "3.0.0-next.2",
   "description": "History base router for Svelte SPA",
   "type": "module",
-  "main": "src/index.ts",
-  "svelte": "src/index.ts",
+  "files": ["dist"],
+  "svelte": "./dist/index.ts",
   "exports": {
     ".": {
-      "svelte": "./src/index.ts"
+      "svelte": "./dist/index.ts",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
     "dev": "vite",
+    "build": "svelte-package",
     "test": "playwright test",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
   },
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.52.0",
+    "@sveltejs/package": "2.3.11",
     "@sveltejs/vite-plugin-svelte": "5.0.3",
     "@tsconfig/svelte": "5.0.4",
     "playwright": "1.52.0",
