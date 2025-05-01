@@ -1,22 +1,21 @@
 # svelte-spa-history-router
 
-History base router for [Svelte](https://svelte.dev/) SPA (Single Page Application).
+A history-based router for [Svelte](https://svelte.dev/) Single Page Applications (SPAs).
 
 > [!TIP]
-> The offcial routing library of Svelte is [SvelteKit](https://svelte.dev/docs/kit/introduction). This library is intented to be used for small project.
-
+> Svelte's official routing library is [SvelteKit](https://svelte.dev/docs/kit/introduction). This library is designed for small or simple projects.
 
 ## Features
 
-- History-base routing
-- path matching and path variable capturing by regular expression
-- resolver (for dynamic routing, code-splitting, data preloading, etc...)
+- History-Based Routing
+- Path matching and Variable Capture using regular expressions
+- Resolver for dynamic routing, code splitting, data preloading, etc.
 
-## *Not* supported features
+## Features *not* supported
 
-- Hash-base routing
+- Hash-based Routing
 - Nested router
-- SSR (Server Side Rendering)
+- Server-Side Rendering (SSR)
 
 ## Install
 
@@ -28,7 +27,7 @@ $ yarn add svelte-spa-history-router
 
 ## Usage
 
-Import `Router` and put into your main component (typically App.svelte).
+Import `Router` and include it in your main component (typically App.svelte).
 
 For example:
 
@@ -51,73 +50,76 @@ For example:
 <Router {routes}/>
 ```
 
-* `Routes` require a `routes` parameter.
-* `routes` is a list of route objects. route object has `path`, `component`, and `resolver` properties.
+* `Router` requires the `routes` parameter.
+* `routes` is a list of route objects. Each route object must have a `path` property, and either a `component` or `resolver` property.
 
   * `path` can be a regular expression. `^` and `$` are automatically added when matching.
-  * `component` is a SvelteComponent. there are no specific requirements for component.
-  * `resolver` is a function to determine component dynamically (optional).
+  * `component` is a Svelte component. There are no specific requirements for the component.
+  * `resolver` is a function to return a dynamic component and return props of the type expected by the component.
 
 * Matching is simply performed in the order defined by `routes`.
 
-### routeParams
+### Path variable
 
-Matched paramaters is passed to component as `params` property.
+For routes that do not use a resolver, matched parameters are passed to the component via the `params` prop.
 
 For example:
 
 ```html
-# Article.svelte
+# App.svelte
+<script>
+  import { Router } from "svelte-spa-history-router";
+  import ItemPage from "./ItemPage.svelte";
 
-<script lang="ts">
-  let { params } = $props();
-
-  const postId = $derived(parseInt(params.postId));
+  const routes = [
+    { path: "/items/(?<itemId>\\d+)", component: ItemPage },
+  ];
 </script>
-<div>
-  { postId }
-</div>
+<Router {routes}/>
 ```
 
-[Additional] For svelte4, `routeParams` is a store to contain matched value to current route.
-
 ```html
-# Article.svelte
+# ItemPage.svelte
 
-<script>
-  import { routeParams } from 'svelte-spa-history-router';
+<script lang="ts">
+  let { params }: { params: { itemId: string } } = $props();
+
+  const itemId = $derived(parseInt(params.itemId));
 </script>
-
-<div class="article">
-  postId: {$routeParams.postId}
+<div>
+  { itemId }
 </div>
 ```
 
 ### Navigation methods
 
-To navigate another page, `link` and `push` are available.
+To navigate to another page, `link` and `push` are available.
 
-* `link` used with a `a` tag like below
+* `link` turns an `<a>` tag into a spa navigation link. For example:
 
 ```html
-import { link } from 'svelte-spa-history-router';
+<script>
+  import { link } from 'svelte-spa-history-router';
+</script>
 
 <a use:link href="/">Home</a>
 ```
 
-* `push` used to navigate programatically
+* `push` navigates to the given path programatically.
 
 ```html
-import { push } from 'svelte-spa-history-router';
+<script>
+  import { push } from 'svelte-spa-history-router';
+<script>
 
-<button on:click={ () => push('/') }>Go to Home</button>
+<button onclick={ () => push('/') }>Go to Home</button>
 ```
 
 ### resolver
 
-Resolver is a mechanism to dynamically determine component and can be used in multiple use cases.
+A resolver is a mechanism for dynamically determining which component to render. It can be used for various purposes, such as:
 
-Example: code spliting (dynamic import)
+Example: code splitting (dynamic import)
 
 ```html
 <script>
@@ -133,18 +135,16 @@ Example: code spliting (dynamic import)
 Example: dynamic routing and pass value to component props.
 
 ```html
-<script>
+<script lang="ts">
   import { Router } from 'svelte-spa-history-router';
 
   import Article from "./Article.svelte";
   import NotFound from "./NotFound.svelte";
 
-  async function prefetchArticle({ params, props }) {
+  async function prefetchArticle(params: Record<string, string>) {
     const article = await getArticle(params.postId);
     if (article) {
-      // pass value to component props
-      props.article = article;
-      return Article;
+      return { component: Article, props: { article } };
     } else {
       return NotFound;
     }
@@ -157,16 +157,22 @@ Example: dynamic routing and pass value to component props.
 <Router {routes}/>
 ```
 
+> [!TIP]
+> This routing mechanism allows preloading data before rendering the component, minimizing layout flicker and improving perceived performance. While skeleton screens are a common modern pattern, this approach can simplify state handling in simple apps.
+
 Example: guard
 
 ```html
-<script>
+<script lang="ts">
   import { Router, redirect } from 'svelte-spa-history-router';
 
   import Admin from "./Admin.svelte";
 
-  function adminGuard(route) {
-    if (!isAdmin($user)) {
+
+  let user: User = $state()
+
+  function adminGuard() {
+    if (!isAdmin(user)) {
       return redirect("/");
     }
     return Admin;
@@ -180,28 +186,91 @@ Example: guard
 <Router {routes}/>
 ```
 
+A resolver must return one of the following types:
+
+```typescript
+| Component
+| { component: Component, props: ComponentProps }
+| Redirection // return value of `redirect()`
+| Promise<
+   | Component
+   | { component: Component, props: ComponentProps }
+   | Redirection
+   | { default: Component } // return value of `import()`
+  >
+```
+
 (Added in v2.0.0)
 
-### currentURL
+(Changed resolver interface in v3.0.0-next.1)
 
-store to detect URL changes (including query string or hash)
+### currentURL()
+
+state to detect URL changes (including query string or hash)
 
 ```html
 <script>
   import { currentURL } from "svelte-spa-history-router";
 
-  $: name = $currentURL.searchParams.get("name") || 'unknown';
+  let name = $derived(currentURL().searchParams.get("name") ?? "unknown");
 </script>
 <div>{ name }</div>
 ```
 
-(Added in 2.1.0)
+(Added in v2.1.0)
+
+(Replaced with Svelte5's `$state()` in v3.0.0-next.1)
+
+### Typing
+
+svelte-spa-history-router provides `Route` type to check combination of component and props.
+
+```typescript
+<script lang="ts">
+  import type { Route } from "svelte-spa-history-router"
+
+  // BlogPost requires article property
+  import type BlogPost from "./pages/BlogPost.svelte"
+
+  import Top from "./pages/Top.svelte"
+
+  const routes: [
+    Route<typeof Top>,
+    Route<typeof BlogPost | typeof NotFound>,
+  ] = [
+    { path: "/", component: Top },
+    {
+      path: "/blog/posts/(?<slug>.*)",
+      resolver: async (params: Record<"slug", string>) => {
+        const article = await getArticle(params.slug);
+        if (article) {
+          const component = (await import("./pages/BlogPost.svelte")).default;
+          return { component, props: { article } }
+        } else {
+          return NotFound;
+        }
+      },
+    },
+  ];
+</script>
+```
+
+(Added in v3.0.0-next.1)
 
 ### Full example:
 
-[example](https://github.com/ykrods/svelte-spa-history-router/tree/master/example)
+[example](https://github.com/ykrods/svelte-spa-history-router/tree/master/src)
 
 ## ChangeLog
+
+### 3.0.0-next.1
+
+* *[Breaking change]* Drop Svelte4 support
+
+  * Remove stores of `routeParams` and `currentURL`
+
+* *[Breaking change]* Change resolver interface
+* Add `currentURL()` which is rewriten to use `$state()`
 
 ### 2.2.0
 
@@ -251,9 +320,9 @@ MIT License.
 
 ## Appendix
 
-Generally, history-base router requires server-side routing so that user can open the direct link or reload.
+A history-based router generally requires server-side routing to support direct links or page reloads.
 
-For example, Nginx excerpt configuration is like bellow.
+For example, the following nginx configuration allows proper routing:
 
 ```
 location / {
@@ -261,10 +330,10 @@ location / {
 }
 ```
 
-If you consider to use firebase hosting for your application, [rewrite](https://firebase.google.com/docs/hosting/full-config#rewrites) may be useful.
+If you are considering using firebase hosting for your application, [rewrite](https://firebase.google.com/docs/hosting/full-config#rewrites) may be useful.
 
 ## Inspired
 
 svelte-spa-history-router is inspired by [svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router) and [Svelte Router SPA](https://github.com/jorgegorka/svelte-router).
 
-If you don't need both history-base and regular expression support, I reccommend these powerful routers.
+If you don't need support for both history-based routing and regular expressions, I recommend these powerful routers.

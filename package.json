@@ -1,28 +1,35 @@
 {
   "name": "svelte-spa-history-router",
-  "version": "2.2.0",
+  "version": "3.0.0-next.2",
   "description": "History base router for Svelte SPA",
   "type": "module",
-  "main": "src/index.js",
-  "svelte": "src/index.js",
+  "files": ["dist"],
+  "svelte": "./dist/index.ts",
   "exports": {
     ".": {
-      "svelte": "./src/index.js"
+      "svelte": "./dist/index.ts",
+      "types": "./dist/index.d.ts"
     }
   },
-  "types": "src/index.d.ts",
   "scripts": {
-    "dev": "cd examples/app-svelte4 && npm run dev",
-    "test": "cd examples/app-svelte4 && npm run test",
-    "format": "prettier --write 'src/**/*.js'",
-    "check": "npx svelte-check"
+    "dev": "vite",
+    "build": "svelte-package",
+    "test": "playwright test",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
   },
   "peerDependencies": {
-    "svelte": "*"
+    "svelte": ">5.0.0"
   },
   "devDependencies": {
-    "prettier": "3.3.3",
-    "svelte": "4.2.19"
+    "@playwright/test": "1.52.0",
+    "@sveltejs/package": "2.3.11",
+    "@sveltejs/vite-plugin-svelte": "5.0.3",
+    "@tsconfig/svelte": "5.0.4",
+    "playwright": "1.52.0",
+    "svelte": "5.28.2",
+    "svelte-check": "4.1.6",
+    "typescript": "5.8.3",
+    "vite": "6.3.4"
   },
   "author": "ykrods",
   "license": "MIT",
