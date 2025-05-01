@@ -1,10 +1,10 @@
 # ChangeLog
 
-## 3.0.0
+## 3.0.0 (2025-05-01)
 
 * chore: add `@sveltejs/package` to generate types of svelte components
 
-## 3.0.0-next.1
+## 3.0.0-next.1 (2025-01-10)
 
 * *[Breaking change]* Drop Svelte4 support
 
