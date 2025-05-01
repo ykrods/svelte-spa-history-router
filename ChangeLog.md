@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 3.0.1 (2025-05-01)
+
+* fix export extension
+
 ## 3.0.0 (2025-05-01)
 
 * chore: add `@sveltejs/package` to generate types of svelte components

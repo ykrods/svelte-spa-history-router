@@ -6,10 +6,10 @@
   "files": [
     "dist"
   ],
-  "svelte": "./dist/index.ts",
+  "svelte": "./dist/index.js",
   "exports": {
     ".": {
-      "svelte": "./dist/index.ts",
+      "svelte": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
