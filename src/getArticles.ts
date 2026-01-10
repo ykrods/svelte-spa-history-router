@@ -1,4 +1,4 @@
-import type { Article } from "../types"
+import type { Article } from "./types"
 
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
