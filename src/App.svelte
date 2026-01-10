@@ -3,6 +3,7 @@
   import { Router, link, push, redirect } from "./lib/index"
 
   import type Admin from "./pages/Admin.svelte"
+  import type AdminItem from "./pages/AdminItem.svelte"
   import type Blog from "./pages/Blog.svelte"
   import type BlogPost from "./pages/BlogPost.svelte"
   import type Query from "./pages/Query.svelte"
@@ -24,6 +25,7 @@
     Route<typeof Blog>,
     Route<typeof BlogPost | typeof NotFound>,
     Route<typeof Admin>,
+    Route<typeof AdminItem>,
     Route<typeof Query>,
     Route<typeof NotFound>,
   ] = [
@@ -80,6 +82,17 @@
       resolver: () => {
         if (user === "admin") {
           return import("./pages/Admin.svelte");
+        } else {
+          return redirect("/");
+        }
+      },
+    },
+    // guard and params
+    {
+      path: "/admin/items/(?<itemId>\\d+)",
+      resolver: () => {
+        if (user === "admin") {
+          return import("./pages/AdminItem.svelte");
         } else {
           return redirect("/");
         }

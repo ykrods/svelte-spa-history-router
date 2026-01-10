@@ -104,8 +104,10 @@ Router component
     route: Route,
     params: Record<string, string>
   ): Promise<Dest | string> {
+    const props = (Object.keys(params).length !== 0) ? { params } : {};
+
     if (route.component) {
-      return { component: route.component, props: { params } };
+      return { component: route.component, props };
 
     } else if (typeof route.resolver === "function") {
       const resolved = await Promise.resolve(route.resolver(params));
@@ -115,11 +117,11 @@ Router component
       } if ("component" in resolved) {
         return resolved;
       } else if ("default" in resolved) {
-        return { component: resolved.default, props: {} };
+        return { component: resolved.default, props };
       } else {
         // assume resolved as component
         // XXX: is there a way to check if a object is svelte component or not?
-        return { component: resolved, props: {} };
+        return { component: resolved, props };
       }
 
     } else {

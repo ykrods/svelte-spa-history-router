@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 3.0.2 (2026-01-10)
+
+* Add params to props when a resolver returns Component or import("Component.svelte") [#16](https://github.com/ykrods/svelte-spa-history-router/issues/16)
+
 ## 3.0.1 (2025-05-01)
 
 * fix export extension
